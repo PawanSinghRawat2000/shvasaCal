@@ -1,0 +1,194 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.authLogin {
+    display: flex;
+    background: #E9F2FF;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+}
+
+.authPopup {
+    display: flex;
+    padding: 30px 38px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+    background: white;
+    border-radius: 12px;
+}
+
+.authPopupHeading {
+    color: #222;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 150%;
+}
+
+.authSocial {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 312px;
+}
+
+.authSocialBtns {
+    display: flex;
+    width: 312px;
+    padding: 14px 16px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    border: 1px solid #CCC;
+    background: #FFF;
+    gap: 16px;
+    cursor: pointer;
+}
+
+.emailSigninHead {
+    display: flex;
+    gap: 16px;
+    width: 312px;
+    justify-content: center;
+    align-items: center;
+}
+
+.line {
+    width: 81px;
+    height: 1px;
+}
+
+.emailSigninHead span {
+    color: #757575;
+    text-align: center;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%;
+}
+
+.authInput {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.authInput p {
+    color: #000;
+    font-family: "Anek Latin";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 150%;
+}
+
+.authInput input {
+    height: 48px;
+    padding: 14px 16px;
+    align-items: center;
+    border-radius: 8px;
+    border: 1px solid #CCC;
+    background: #FFF;
+}
+
+.passwordInput {
+    position: relative;
+    display: flex;
+}
+
+.passwordInput svg {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    cursor: pointer;
+}
+
+.floatRight {
+    text-align: right;
+    width: 100%;
+    color: #222;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%;
+    cursor: pointer;
+}
+
+.authSignin {
+    border-radius: 100px;
+    background: #277DFF;
+    width: 100%;
+    padding: 14px 0px;
+}
+
+.authNewText {
+    color: #888;
+    text-align: center;
+    font-family: "Anek Latin";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%;
+}
+
+.authNewText span {
+    color: #222;
+    cursor: pointer;
+}
+
+.authRight {
+    background-color: white;
+    padding: 120px 60px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.authRight .slick-dots {
+    text-align: left !important;
+}
+
+.authTestimonial {
+    display: flex;
+    flex-direction: column;
+    width: 752px;
+    height: 572px;
+}
+
+.profileImg {
+    width: 140px;
+    height: 140px;
+    flex-shrink: 0;
+    border-radius: 100px;
+    background: #CCC;
+    margin-top: 40px;
+}
+
+.authTestimonialUser {
+    color: #000;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 140%;
+    letter-spacing: 0.6px;
+}
+
+.authTestimonialDesignation {
+    color: #000;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 140%;
+    letter-spacing: 0.36px;
+}
+
+.authTerms{
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
