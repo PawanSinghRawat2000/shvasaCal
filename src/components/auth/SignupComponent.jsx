@@ -28,7 +28,7 @@ function SignupComponent({ setShowLogin }) {
         if (!response.ok) {
             alert("User already exists");
         } else {
-            navigate('/dashboard');
+            navigate('/calendar');
         }
     };
 

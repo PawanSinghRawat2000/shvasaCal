@@ -61,17 +61,23 @@ function EventPopup({ setShowEventPopup, eventDayTime, setEventDayTime, eventLis
     });
 
     return (
-        <div className='fixed top-[50%] left-[50%]  translate-x-[-50%] translate-y-[-50%] w-80 z-10 border-2 bg-white rounded-md py-1 px-2'>
+        <div className='fixed top-[50%] left-[50%]  translate-x-[-50%] translate-y-[-50%] w-96 z-10 border border-slate-400 bg-white rounded-md py-1 px-2'>
             <form className='flex flex-col gap-6' onSubmit={createEvent}>
                 <div className="flex w-full justify-between">
                     <h2 className="font-bold">Add Event</h2>
-                    <span className='cursor-pointer' onClick={() => setShowEventPopup(false)}>&times;</span>
+                    <span className='cursor-pointer font-bold text-xl' onClick={() => setShowEventPopup(false)}>&times;</span>
                 </div>
                 <div className='flex flex-col gap-1.5'>
                     <label htmlFor="title">Add Title</label>
                     <input id='title' type="text" placeholder='Shvasa Interview' required onChange={(e) => setTitle(e.target.value)} />
                     <label htmlFor="tag">Add tag</label>
-                    <input id="tag" type="text" placeholder='Meeting' onChange={(e) => setTag(e.target.value)} />
+                    {/* <input id="tag" type="text" placeholder='Meeting' onChange={(e) => setTag(e.target.value)} /> */}
+                    <select id="tag" onChange={(e) => setTag(e.target.value)}>
+                        <option value="">Please selected</option>
+                        <option value="Important">Important</option>
+                        <option value="Birthday">Birthday</option>
+                        <option value="Family Event">Family Event</option>
+                    </select>
                     <label htmlFor="startTime">Start Time</label>
                     <select
                         id="startTime"
@@ -100,7 +106,7 @@ function EventPopup({ setShowEventPopup, eventDayTime, setEventDayTime, eventLis
                         ))}
                     </select>
                 </div>
-                <button type="submit">
+                <button type="submit" className='px-2 py-1 bg-blue-500 text-center rounded-md text-white'>
                     Save
                 </button>
             </form>
