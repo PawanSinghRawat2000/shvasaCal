@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { postData } from '../../utils/api';
 
 function EventPopup({ setShowEventPopup, eventDayTime, setEventDayTime, eventList, setEventList, syncWithGoogle }) {
     const [title, setTitle] = useState("");
@@ -21,28 +22,22 @@ function EventPopup({ setShowEventPopup, eventDayTime, setEventDayTime, eventLis
 
     const createEvent = async (e) => {
         e.preventDefault();
-        const postData = {
+        const postBody = {
             title,
             tag,
             startTime: eventDayTime.startTime,
             endTime: eventDayTime.endTime,
             sync: syncWithGoogle
         }
-        if (isEventOverlapping(postData, eventList)) {
+        if (isEventOverlapping(postBody, eventList)) {
             alert("The event overlaps with an existing event. Please choose a different time.");
             return;
         }
-        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/createEvent`,
-            {
-                method: "POST",
-                credentials: "include",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(postData)
-            });
-        const savedEvent = await response.json();
-        console.log(savedEvent);
+        const savedEvent = await postData("createEvent", postBody);
+        if (savedEvent.error) {
+            alert(savedEvent.error);
+            return;
+        }
         setEventList([...eventList, savedEvent.event])
         setShowEventPopup(false);
     }

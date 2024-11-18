@@ -1,10 +1,15 @@
 import React, { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { getData } from '../../utils/api';
 
 function Navbar({ syncWithGoogle,setSyncWithGoogle}) {
     const navigate = useNavigate();
     const handleLogout = async()=>{
-        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/logout`, { credentials: "include", });
+        const response = await getData("logout");
+        if(response.error){
+            alert(response.error);
+            return;
+        }
         localStorage.removeItem('user');
         navigate('/login');
     }
@@ -33,9 +38,6 @@ function Navbar({ syncWithGoogle,setSyncWithGoogle}) {
                         </button>
                     </div>
                     <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-                        <div className="flex shrink-0 items-center">
-                            <img className="h-8 w-auto" src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=500" alt="Your Company"/>
-                        </div>
                         <div className="hidden sm:ml-6 sm:block">
                             <div className="flex space-x-4">
                                 <Link to="/calendar" className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Calendar</Link>
@@ -64,15 +66,6 @@ function Navbar({ syncWithGoogle,setSyncWithGoogle}) {
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-
-            <div className="sm:hidden" id="mobile-menu">
-                <div className="space-y-1 px-2 pb-3 pt-2">
-                    <a href="#" className="block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-white" aria-current="page">Dashboard</a>
-                    <a href="#" className="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Team</a>
-                    <a href="#" className="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Projects</a>
-                    <a href="#" className="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Calendar</a>
                 </div>
             </div>
         </nav>

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Navbar from '../navbar/Navbar'
 import Pagination from '../pagination/Pagination';
 import { format } from 'date-fns';
+import { postData } from '../../utils/api';
 
 const tagStyle = {
     "Important": "bg-red-500",
@@ -38,17 +39,13 @@ function UpcomingEvents() {
                     page,
                     filter
                 }
-                const events = await fetch(`${import.meta.env.VITE_BACKEND_URL}/getUpcomingEvents`, {
-                    method: "POST",
-                    credentials: "include",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(data)
-                });
-                const eventsRes = await events.json();
-                setEventList(eventsRes.events);
-                setTotalPages(eventsRes.totalPages);
+                const events = await postData("getUpcomingEvents", data);
+                if (events.error) {
+                    alert(events.error);
+                    return;
+                }
+                setEventList(events.events);
+                setTotalPages(events.totalPages);
             } catch (error) {
                 console.error("Error fetching events:", error);
             }
@@ -79,12 +76,13 @@ function UpcomingEvents() {
                             hover:scale-105 hover:shadow-xl hover:cursor-pointer`}
                         >
                             <span className="font-semibold text-lg">{event.title}</span>
+                            <span className="text-sm text-gray-100">{`${format(new Date(event.startTime), 'dd MMM yyyy')}`}</span>
                             <span className="text-sm text-gray-100">{`${format(new Date(event.startTime), 'hh:mm a')} - ${format(new Date(event.endTime), 'hh:mm a')}`}</span>
                         </div>
                     ))}
 
                 </div>
-                <Pagination totalPages={totalPages} setPage={setPage} />
+                {!!totalPages && <Pagination totalPages={totalPages} setPage={setPage} />}
             </div>
         </>
     )

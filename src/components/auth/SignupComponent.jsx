@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { postData } from "../../utils/api";
 
 function SignupComponent({ setShowLogin }) {
     const [email, setEmail] = useState("");
@@ -13,23 +14,17 @@ function SignupComponent({ setShowLogin }) {
             alert("Password mismatch");
             return;
         }
-        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/emailSignup`, {
-            method: "POST",
-            credentials:"include",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                email,
-                password,
-            }),
-        });
-
-        if (!response.ok) {
-            alert("User already exists");
-        } else {
-            navigate('/calendar');
+        const data = {
+            email,
+            password,
         }
+        const response = await postData("emailSignup", data);
+        if (response.error) {
+            alert("User already exists");
+            return;
+        }
+        localStorage.setItem("user", email);
+        navigate('/calendar');
     };
 
     return (

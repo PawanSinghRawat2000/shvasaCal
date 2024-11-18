@@ -17,6 +17,7 @@ import { MdOutlineNavigateBefore, MdOutlineNavigateNext } from "react-icons/md";
 import EventPopup from '../popups/EventPopup';
 import Navbar from '../navbar/Navbar';
 import { FaRegUserCircle } from "react-icons/fa";
+import { postData } from '../../utils/api';
 
 let colStartClasses = [
     '',
@@ -108,52 +109,39 @@ function Calendar() {
         try {
             const startDate = currentWeek[0].date;
             const endDate = currentWeek[6].date;
-            const weeklyResponse = await fetch(`${import.meta.env.VITE_BACKEND_URL}/getWeeklyEvents`, {
-                method: "POST",
-                credentials: "include",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    startDate,
-                    endDate,
-                    userId
-                }),
-            });
-            const weeklyData = await weeklyResponse.json();
-            setEventList(weeklyData.event);
+            const weekBody = {
+                startDate,
+                endDate,
+                userId
+            }
+            const weeklyResponse = await postData("getWeeklyEvents", weekBody);
+            if (weeklyResponse.error) {
+                alert(response.error);
+                return;
+            }
+            setEventList(weeklyResponse.event);
             if (syncWithGoogle && !userId) {
                 try {
-                    const eventsResponse = await fetch(`${import.meta.env.VITE_BACKEND_URL}/events`,
-                        {
-                            method: "POST",
-                            credentials: "include",
-                            headers: {
-                                "Content-Type": "application/json",
-                            },
-                            body: JSON.stringify({
-                                startDate,
-                                endDate,
-                            }),
-                        });
-                    const gEvents = await eventsResponse.json();
-                    if (eventsResponse.ok) {
-                        setEventList((prev) => [
-                            ...gEvents.map((gevent) => ({
-                                id: gevent.id,
-                                title: gevent.summary,
-                                startTime: gevent.start.dateTime,
-                                endTime: gevent.end.dateTime,
-                            })),
-                            ...prev,
-                        ]);
-                    } else {
-                        alert("Please Sign In");
-                        localStorage.removeItem("googleSync");
+                    const eventsBody = {
+                        startDate,
+                        endDate,
+                    };
+                    const eventsResponse = await postData("events", eventsBody);
+                    if (eventsResponse.error) {
+                        alert(eventsResponse.error);
+                        return;
                     }
+                    setEventList((prev) => [
+                        ...eventsResponse.map((gevent) => ({
+                            id: gevent.id,
+                            title: gevent.summary,
+                            startTime: gevent.start.dateTime,
+                            endTime: gevent.end.dateTime,
+                        })),
+                        ...prev,
+                    ]);
                 } catch (error) {
-                    alert("Please Sign In");
-                    localStorage.removeItem("googleSync");
+                    console.log(error);
                 }
             }
         } catch (error) {
@@ -172,19 +160,13 @@ function Calendar() {
 
     useEffect(() => {
         const fetchUsers = async () => {
-            const users = await fetch(`${import.meta.env.VITE_BACKEND_URL}/users`,
-                {
-                    method: "POST",
-                    credentials: "include",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        userSearch
-                    }),
-                });
-            const usersRes = await users.json();
-            setUserList(usersRes.data);
+
+            const users = await postData("users", { userSearch });
+            if (users.error) {
+                alert(users.error);
+                return;
+            }
+            setUserList(users.data);
         }
         if (userSearch === "" || selectedUser) {
             setUserList([]);
@@ -259,7 +241,7 @@ function Calendar() {
                                         isEqual(day, selectedDay) && 'text-white',
                                         !isEqual(day, selectedDay) &&
                                         isToday(day) &&
-                                        'text-red-500',
+                                        'text-orange-500',
                                         !isEqual(day, selectedDay) &&
                                         !isToday(day) &&
                                         isSameMonth(day, firstDayCurrentMonth) &&
@@ -268,7 +250,7 @@ function Calendar() {
                                         !isToday(day) &&
                                         !isSameMonth(day, firstDayCurrentMonth) &&
                                         'text-gray-400',
-                                        isEqual(day, selectedDay) && isToday(day) && 'bg-red-500',
+                                        isEqual(day, selectedDay) && isToday(day) && 'bg-orange-500',
                                         isEqual(day, selectedDay) &&
                                         !isToday(day) &&
                                         'bg-gray-900',
@@ -287,7 +269,7 @@ function Calendar() {
                     </div>
                     <div className="mt-2 flex gap-2.5 items-center relative">
                         <FaRegUserCircle className='w-6 h-6' />
-                        <input type="text" placeholder='Search a user by email' className='border-none focus:outline-none bg-slate-200 rounded-md px-2 py-1' value={userSearch} onChange={(e) => {setUserSearch(e.target.value);setSelectedUser("")}} />
+                        <input type="text" placeholder='Search a user by email' className='border-none focus:outline-none bg-slate-200 rounded-md px-2 py-1' value={userSearch} onChange={(e) => { setUserSearch(e.target.value); setSelectedUser("") }} />
                         {!!userList.length && <div className='absolute top-8 left-0 bg-white border px-2 py-1 rounded-md'>
                             {userList.map((user) => (
                                 <div key={user._id} className='py-1 px-2 hover:bg-slate-200 hover:rounded-md cursor-pointer' onClick={() => { setSelectedUser(user._id); setUserSearch(user.email); setUserList([]) }}>{user.email}</div>
