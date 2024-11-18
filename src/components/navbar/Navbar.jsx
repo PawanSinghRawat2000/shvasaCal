@@ -14,7 +14,7 @@ function Navbar({ syncWithGoogle,setSyncWithGoogle}) {
         navigate('/login');
     }
     const handleSignIn = async() => {
-        window.location.href = "http://localhost:3012/googleAuth";
+        window.location.href = `${import.meta.env.VITE_BACKEND_URL}/googleAuth`;
     }
     const handleSignout=()=>{
         document.cookie = "google_sync_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; SameSite=Lax";
