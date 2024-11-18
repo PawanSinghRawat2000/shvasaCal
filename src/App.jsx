@@ -3,6 +3,7 @@ import Calendar from "./components/calendar/Calendar"
 import Auth from "./components/auth/Auth"
 import GoogleRedirect from "./components/redirectComponent/GoogleRedirect"
 import Protected from "./components/protected/Protected"
+import UpcomingEvents from "./components/upcomingevents/UpcomingEvents"
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           </Protected>} />
           <Route path="/login" element={<Auth />} />
           <Route path="/googlecallback" element={<GoogleRedirect />} />
+          <Route path="/upcoming-events" element={<UpcomingEvents />} />
           <Route path="*" element={<Auth />} />
         </Routes>
       </BrowserRouter>

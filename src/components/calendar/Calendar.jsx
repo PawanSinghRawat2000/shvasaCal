@@ -35,6 +35,13 @@ const tagStyle = {
     "Family Event": "bg-green-500"
 }
 
+const getCookie = (name) => {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+    return null;
+};
+
 function Calendar() {
     let today = startOfToday();
     let [selectedDay, setSelectedDay] = useState(today)
@@ -44,7 +51,7 @@ function Calendar() {
     const [eventDayTime, setEventDayTime] = useState();
     const [currentWeek, setCurrentWeek] = useState(getCurrentWeek(today));
     const [eventList, setEventList] = useState([]);
-    const [syncWithGoogle, setSyncWithGoogle] = useState(localStorage.getItem("googleSync") == 1);
+    const [syncWithGoogle, setSyncWithGoogle] = useState(false);
     const [userList, setUserList] = useState([]);
     const [userSearch, setUserSearch] = useState("");
     const [selectedUser, setSelectedUser] = useState("");
@@ -179,8 +186,7 @@ function Calendar() {
             const usersRes = await users.json();
             setUserList(usersRes.data);
         }
-        if (userSearch === "") {
-            setSelectedUser("");
+        if (userSearch === "" || selectedUser) {
             setUserList([]);
             return;
         }
@@ -197,6 +203,14 @@ function Calendar() {
             fetchAllEvents(selectedUser);
         }
     }, [selectedUser])
+    useEffect(() => {
+        const googleSyncCookie = getCookie("google_sync_token");
+        if (googleSyncCookie === "1") {
+            setSyncWithGoogle(true);
+        } else {
+            setSyncWithGoogle(false);
+        }
+    }, []);
 
     return (
         <>
@@ -273,10 +287,10 @@ function Calendar() {
                     </div>
                     <div className="mt-2 flex gap-2.5 items-center relative">
                         <FaRegUserCircle className='w-6 h-6' />
-                        <input type="text" placeholder='Search a user by email' className='border-none focus:outline-none bg-slate-200 rounded-md px-2 py-1' onChange={(e) => setUserSearch(e.target.value)} />
+                        <input type="text" placeholder='Search a user by email' className='border-none focus:outline-none bg-slate-200 rounded-md px-2 py-1' value={userSearch} onChange={(e) => {setUserSearch(e.target.value);setSelectedUser("")}} />
                         {!!userList.length && <div className='absolute top-8 left-0 bg-white border px-2 py-1 rounded-md'>
                             {userList.map((user) => (
-                                <div key={user._id} className='py-1 px-2 hover:bg-slate-200 hover:rounded-md cursor-pointer' onClick={() => setSelectedUser(user._id)}>{user.email}</div>
+                                <div key={user._id} className='py-1 px-2 hover:bg-slate-200 hover:rounded-md cursor-pointer' onClick={() => { setSelectedUser(user._id); setUserSearch(user.email); setUserList([]) }}>{user.email}</div>
                             ))}
                         </div>}
                     </div>

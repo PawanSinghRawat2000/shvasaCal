@@ -8,11 +8,11 @@ function Navbar({ syncWithGoogle,setSyncWithGoogle}) {
         localStorage.removeItem('user');
         navigate('/login');
     }
-    const handleSignIn = () => {
-        window.open(`https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${import.meta.env.VITE_GOOGLE_CLIENT}&redirect_uri=${import.meta.env.VITE_GOOGLE_REDIRECT_URI}&scope=https://www.googleapis.com/auth/calendar.readonly https://www.googleapis.com/auth/calendar.events&access_type=offline`, "_self");
+    const handleSignIn = async() => {
+        window.location.href = "http://localhost:3012/googleAuth";
     }
     const handleSignout=()=>{
-        localStorage.removeItem("googleSync");
+        document.cookie = "google_sync_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; SameSite=Lax";
         setSyncWithGoogle(false);
     }
     return (
@@ -39,6 +39,11 @@ function Navbar({ syncWithGoogle,setSyncWithGoogle}) {
                         <div className="hidden sm:ml-6 sm:block">
                             <div className="flex space-x-4">
                                 <Link to="/calendar" className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Calendar</Link>
+                            </div>
+                        </div>
+                        <div className="hidden sm:ml-6 sm:block">
+                            <div className="flex space-x-4">
+                                <Link to="/upcoming-events" className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Upcoming Events</Link>
                             </div>
                         </div>
                     </div>
