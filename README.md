@@ -1,8 +1,14 @@
-# React + Vite
+//Clone instructions 
+git clone <repository-url>
+cd <project-name>
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+// setup instructions
+npm install
+npm run dev
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+//create a .env file
+PORT=3011
+VITE_BACKEND_URL=http://localhost:3012
+VITE_GOOGLE_API_KEY=YOUR_API_KEY
+VITE_GOOGLE_CLIENT=YOUR_GOOGLE_APP_CLIENT_ID
