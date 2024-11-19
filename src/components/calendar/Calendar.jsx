@@ -182,7 +182,7 @@ function Calendar() {
         }
     }, [selectedUser])
     useEffect(() => {
-        const googleSync = searchParams.sync;
+        const googleSync = searchParams.get("sync");
         if (googleSync == "1" || localStorage.getItem("googleSync")) {
             setSyncWithGoogle(true);
             localStorage.setItem("googleSync",1);
