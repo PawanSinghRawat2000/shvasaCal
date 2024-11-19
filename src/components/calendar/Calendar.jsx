@@ -18,7 +18,7 @@ import EventPopup from '../popups/EventPopup';
 import Navbar from '../navbar/Navbar';
 import { FaRegUserCircle } from "react-icons/fa";
 import { postData } from '../../utils/api';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 let colStartClasses = [
     '',
@@ -50,7 +50,7 @@ function Calendar() {
     const [userList, setUserList] = useState([]);
     const [userSearch, setUserSearch] = useState("");
     const [selectedUser, setSelectedUser] = useState("");
-    const params = useParams();
+    const [searchParams, setSearchParams] = useSearchParams();
     const navigate = useNavigate();
     let days = eachDayOfInterval({
         start: firstDayCurrentMonth,
@@ -182,13 +182,13 @@ function Calendar() {
         }
     }, [selectedUser])
     useEffect(() => {
-        const googleSync = params.sync;
+        const googleSync = searchParams.sync;
         if (googleSync == "1" || localStorage.getItem("googleSync")) {
             setSyncWithGoogle(true);
         }
         searchParams.delete("sync");
         navigate({ search: searchParams.toString() }, { replace: true });
-    }, [params,navigate]);
+    }, [searchParams,navigate]);
 
     return (
         <>
