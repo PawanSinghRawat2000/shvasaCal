@@ -18,7 +18,7 @@ import EventPopup from '../popups/EventPopup';
 import Navbar from '../navbar/Navbar';
 import { FaRegUserCircle } from "react-icons/fa";
 import { postData } from '../../utils/api';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 let colStartClasses = [
     '',
@@ -51,6 +51,7 @@ function Calendar() {
     const [userSearch, setUserSearch] = useState("");
     const [selectedUser, setSelectedUser] = useState("");
     const params = useParams();
+    const navigate = useNavigate();
     let days = eachDayOfInterval({
         start: firstDayCurrentMonth,
         end: endOfMonth(firstDayCurrentMonth),
@@ -185,7 +186,9 @@ function Calendar() {
         if (googleSync == "1" || localStorage.getItem("googleSync")) {
             setSyncWithGoogle(true);
         }
-    }, []);
+        searchParams.delete("sync");
+        navigate({ search: searchParams.toString() }, { replace: true });
+    }, [params,navigate]);
 
     return (
         <>
