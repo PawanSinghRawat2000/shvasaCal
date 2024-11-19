@@ -18,6 +18,7 @@ import EventPopup from '../popups/EventPopup';
 import Navbar from '../navbar/Navbar';
 import { FaRegUserCircle } from "react-icons/fa";
 import { postData } from '../../utils/api';
+import { useParams } from 'react-router-dom';
 
 let colStartClasses = [
     '',
@@ -36,13 +37,6 @@ const tagStyle = {
     "Family Event": "bg-green-500"
 }
 
-const getCookie = (name) => {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop().split(';').shift();
-    return null;
-};
-
 function Calendar() {
     let today = startOfToday();
     let [selectedDay, setSelectedDay] = useState(today)
@@ -56,6 +50,7 @@ function Calendar() {
     const [userList, setUserList] = useState([]);
     const [userSearch, setUserSearch] = useState("");
     const [selectedUser, setSelectedUser] = useState("");
+    const params = useParams();
     let days = eachDayOfInterval({
         start: firstDayCurrentMonth,
         end: endOfMonth(firstDayCurrentMonth),
@@ -186,12 +181,9 @@ function Calendar() {
         }
     }, [selectedUser])
     useEffect(() => {
-        const googleSyncCookie = getCookie("google_sync_token");
-        console.log(googleSyncCookie,"cookie");
-        if (googleSyncCookie === "1") {
+        const googleSync = params.sync;
+        if (googleSync == "1" || localStorage.getItem("googleSync")) {
             setSyncWithGoogle(true);
-        } else {
-            setSyncWithGoogle(false);
         }
     }, []);
 

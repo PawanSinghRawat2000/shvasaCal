@@ -18,11 +18,13 @@ function Navbar({ syncWithGoogle,setSyncWithGoogle}) {
         const response = await getData("googleAuth");
         if(response.redirectUrl){
             window.location.href = response.redirectUrl;
+        }else{
+            localStorage.setItem("googleSync",1);
+            setSyncWithGoogle(true);
         }
-        setSyncWithGoogle(true);
     }
     const handleSignout=()=>{
-        document.cookie = "google_sync_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; SameSite=Lax";
+        localStorage.removeItem("googleSync");
         setSyncWithGoogle(false);
     }
     return (
