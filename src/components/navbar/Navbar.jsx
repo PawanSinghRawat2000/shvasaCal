@@ -14,10 +14,12 @@ function Navbar({ syncWithGoogle,setSyncWithGoogle}) {
         navigate('/login');
     }
     const handleSignIn = async() => {
-        // window.location.href = `${import.meta.env.VITE_BACKEND_URL}/googleAuth`;
         const response = await getData("googleAuth");
         if(response.redirectUrl){
             window.location.href = response.redirectUrl;
+        } else {
+            localStorage.setItem("googleSync", 1);
+            setSyncWithGoogle(true);
         }
     }
     const handleSignout=()=>{
