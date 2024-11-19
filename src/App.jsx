@@ -13,7 +13,7 @@ function App() {
             <Calendar />
           </Protected>} />
           <Route path="/login" element={<Auth />} />
-          <Route path="/upcoming-events" element={<UpcomingEvents />} />
+          <Route path="/upcoming-events" element={<Protected><UpcomingEvents /></Protected>} />
           <Route path="*" element={<Auth />} />
         </Routes>
       </BrowserRouter>
