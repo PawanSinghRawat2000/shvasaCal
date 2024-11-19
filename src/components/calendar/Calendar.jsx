@@ -185,6 +185,7 @@ function Calendar() {
         const googleSync = searchParams.sync;
         if (googleSync == "1" || localStorage.getItem("googleSync")) {
             setSyncWithGoogle(true);
+            localStorage.setItem("googleSync",1);
         }
         searchParams.delete("sync");
         navigate({ search: searchParams.toString() }, { replace: true });
