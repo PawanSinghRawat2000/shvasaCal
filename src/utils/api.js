@@ -12,7 +12,13 @@ export const postData = async (path, data) => {
             }
         );
         const result = await response.json();
+        console.log(response)
         if (!response.ok) {
+            console.log(result);
+            if (result.message === "User not logged in") {
+                localStorage.removeItem("user");
+                window.location.href=`/login`;
+            }
             return { error: result.message };
         }
         return result;
@@ -35,6 +41,10 @@ export const getData = async (path) => {
         );
         const result = await response.json();
         if (!response.ok) {
+            if (result.message ==="User not logged in"){
+                localStorage.removeItem("user");
+                window.location.href = `/login`;
+            }
             return { error: result.message };
         }
         return result;

@@ -187,6 +187,7 @@ function Calendar() {
     }, [selectedUser])
     useEffect(() => {
         const googleSyncCookie = getCookie("google_sync_token");
+        console.log(googleSyncCookie,"cookie");
         if (googleSyncCookie === "1") {
             setSyncWithGoogle(true);
         } else {

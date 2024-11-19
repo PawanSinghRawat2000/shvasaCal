@@ -68,18 +68,18 @@ function UpcomingEvents() {
                             <option value="Family Event">Family Event</option>
                         </select>
                     </div>
-                    {eventList.map((event) => (
+                    {eventList.length ? eventList.map((event) => (
                         <div
                             className={`flex flex-col items-center space-y-2 p-4 rounded-lg 
                             ${event.tag ? tagStyle[event.tag] : 'bg-orange-500'} 
-                            bg-blue-500 text-slate-800 text-sm shadow-lg transition-transform 
+                            text-slate-800 text-sm shadow-lg transition-transform 
                             hover:scale-105 hover:shadow-xl hover:cursor-pointer`}
                         >
                             <span className="font-semibold text-lg">{event.title}</span>
                             <span className="text-sm text-gray-100">{`${format(new Date(event.startTime), 'dd MMM yyyy')}`}</span>
                             <span className="text-sm text-gray-100">{`${format(new Date(event.startTime), 'hh:mm a')} - ${format(new Date(event.endTime), 'hh:mm a')}`}</span>
                         </div>
-                    ))}
+                    )):<>No upcoming events</>}
 
                 </div>
                 {!!totalPages && <Pagination totalPages={totalPages} setPage={setPage} />}
